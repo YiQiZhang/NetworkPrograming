@@ -1,7 +1,8 @@
-#include _LIB_IOHELPER_H_
-#define _LIB_IOHELPER_H_
+#ifndef _LIB_SYSHELPER_H_
+#define _LIB_SYSHELPER_H_
 
 #include <stdio.h>
+#include <unistd.h>
 
 void 
 err_sys(const char *str)

@@ -29,6 +29,16 @@ Listen(int sockfd, int backlog)
     err_sys("listen err");
 }
 
+int
+Connect(int sockfd, const struct sockaddr *sa, socklen_t len)
+{
+  int status;
+  if ( (status = connect(sockfd, sa, len)) < 0)
+    err_sys("connect err");
+
+  return status;
+}
+
 void
 Close(int fd)
 {
