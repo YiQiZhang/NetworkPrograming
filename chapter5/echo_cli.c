@@ -4,18 +4,26 @@ void
 str_cli(FILE *fp, int sockfd)
 {
   ssize_t rn, wn;
-  char buf[MAX_LINE];
+  char sendline[MAX_LINE], recvline[MAX_LINE + 1];
   
-  while( (rn = readn(fileno(fp), buf, MAX_LINE)) > 0) {
-    printf("cli read %d bytes from stdio\n", (int) rn);
-    if ( ( wn = writen(sockfd, buf, rn) ) == rn) {
-      printf("cli write %d bytes to sockfd\n", (int) wn);
-      while ( (rn = readn(sockfd, buf, MAX_LINE)) > 0) {
-        printf("cli read %d bytes from sockfd\n", (int) rn);
-        writen(fileno(stdout), buf, rn);
-      }
-    } else {
-      err_sys("str_cli error");
+//  while( (rn = readn(fileno(fp), sendline, MAX_LINE)) > 0) {
+//    sendline[rn] = EOF;
+//    if ( ( wn = writen(sockfd, sendline, rn) ) == rn) {
+//      while ( (rn = readn(sockfd, recvline, MAX_LINE)) > 0) {
+//        writen(fileno(stdout), recvline, rn);
+//      }
+//    } else {
+//      err_sys("str_cli error");
+//    }
+//  }
+
+  sendline[0] = 'a';
+  sendline[1] = 'b';
+  sendline[2] = 0;
+
+  if ( (wn = writen(sockfd, sendline, 3)) == 3 ) {
+    if ( (rn = readn(sockfd, recvline, MAX_LINE)) > 0 ) {
+      writen(fileno(stdout), recvline, rn);
     }
   }
 }

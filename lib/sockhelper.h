@@ -40,6 +40,13 @@ Connect(int sockfd, const struct sockaddr *sa, socklen_t len)
 }
 
 void
+Shutdown(int sockfd, int howto)
+{
+  if ( shutdown(sockfd, howto) < 0 )
+    err_sys("shutdown err");
+}
+
+void
 Close(int fd)
 {
   if (close(fd) == -1)
