@@ -7,9 +7,12 @@ str_cli(FILE *fp, int sockfd)
   char buf[MAX_LINE];
   
   while( (rn = readn(fileno(fp), buf, MAX_LINE)) > 0) {
+    printf("cli read %d bytes from stdio\n", (int) rn);
     if ( ( wn = writen(sockfd, buf, rn) ) == rn) {
+      printf("cli write %d bytes to sockfd\n", (int) wn);
       while ( (rn = readn(sockfd, buf, MAX_LINE)) > 0) {
-        writen(stdout, buf, rn);
+        printf("cli read %d bytes from sockfd\n", (int) rn);
+        writen(fileno(stdout), buf, rn);
       }
     } else {
       err_sys("str_cli error");

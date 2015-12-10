@@ -13,6 +13,7 @@ readn(int sockfd, char *buf, size_t len)
   nleft = len;
 
   while (nleft > 0) {
+    printf("ready to read, nleft = %d\n", (int) nleft);
     if ((n = read(sockfd, ptr, nleft)) < 0) {
       if (errno == EINTR)
         continue;
@@ -25,6 +26,7 @@ readn(int sockfd, char *buf, size_t len)
     ptr += n;
   }
 
+  printf("read finished, total %d bytes\n", (int) (len - nleft));
   return len - nleft; 
 }
 
@@ -39,6 +41,7 @@ writen(int sockfd, char *buf, size_t len)
   ptr = buf;
 
   while (nleft > 0) {
+    printf("ready to write, nleft = %d\n", (int) nleft);
     if ( (n = write(sockfd, ptr, nleft)) < 0) {
       if (errno == EINTR)
         continue;
@@ -52,6 +55,7 @@ writen(int sockfd, char *buf, size_t len)
     ptr += n;
   }
 
+  printf("write finished, total %d bytes\n", (int) n);
   return n;
 } 
 
