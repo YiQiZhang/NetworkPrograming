@@ -4,6 +4,16 @@
 #include "syshelper.h"
 
 ssize_t
+Read(int sockfd, char *buf, size_t len)
+{
+  ssize_t n;
+  if ( (n = read(sockfd, buf, len)) < 0 )
+    err_sys("read error");
+
+  return n;
+}
+
+ssize_t
 readn(int sockfd, char *buf, size_t len)
 {
   size_t nleft;
@@ -26,6 +36,16 @@ readn(int sockfd, char *buf, size_t len)
   }
 
   return len - nleft; 
+}
+
+ssize_t
+Write(int sockfd, const char *buf, size_t len)
+{
+  ssize_t n;
+  if ( (n = write(sockfd, buf, len)) != len )
+    err_sys("write error");
+
+  return n;
 }
 
 ssize_t

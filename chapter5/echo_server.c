@@ -6,7 +6,7 @@ str_echo(int sockfd)
 {
   char buf[MAX_LINE];
   ssize_t n; 
-  while( (n = readn(sockfd, buf, MAX_LINE)) > 0 ) {
+  while( (n = Read(sockfd, buf, MAX_LINE)) > 0 ) {
     writen(sockfd, buf, n);
   }
 }

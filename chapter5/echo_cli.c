@@ -3,27 +3,14 @@
 void
 str_cli(FILE *fp, int sockfd)
 {
-  ssize_t rn, wn;
+  ssize_t n;
   char sendline[MAX_LINE], recvline[MAX_LINE + 1];
   
-//  while( (rn = readn(fileno(fp), sendline, MAX_LINE)) > 0) {
-//    sendline[rn] = EOF;
-//    if ( ( wn = writen(sockfd, sendline, rn) ) == rn) {
-//      while ( (rn = readn(sockfd, recvline, MAX_LINE)) > 0) {
-//        writen(fileno(stdout), recvline, rn);
-//      }
-//    } else {
-//      err_sys("str_cli error");
-//    }
-//  }
-
-  sendline[0] = 'a';
-  sendline[1] = 'b';
-  sendline[2] = 0;
-
-  if ( (wn = writen(sockfd, sendline, 3)) == 3 ) {
-    if ( (rn = readn(sockfd, recvline, MAX_LINE)) > 0 ) {
-      writen(fileno(stdout), recvline, rn);
+  while( (n = read(fileno(fp), sendline, MAX_LINE)) > 0 ) {
+    writen(sockfd, sendline, n);
+    if ( (n = read(sockfd, recvline, MAX_LINE)) > 0 ) {
+      recvline[n] = 0;
+      fputs(recvline, stdout);
     }
   }
 }
