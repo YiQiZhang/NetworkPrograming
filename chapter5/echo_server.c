@@ -1,5 +1,15 @@
 #include "includes.h"
 
+void
+sig_chld(int signo)
+{
+  pid_t pid;
+  int stat;
+  while( (pid = waitpid(-1, &stat, WNOHANG)) > 0 )
+    printf("child %d terminated\n", pid);
+
+  return;
+}
 
 void
 str_echo(int sockfd)
@@ -33,6 +43,8 @@ int main(int argc, char **argv)
   Listen(servfd, MAX_LISTEN_QUENEN);
 
   clilen = sizeof(cliaddr);
+
+  Signal(SIGCHLD, sig_chld);
 
   while(1) {
     while((connfd = accept(servfd, (SA *) &cliaddr, &clilen)) > 0) {
